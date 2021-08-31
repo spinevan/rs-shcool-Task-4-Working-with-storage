@@ -5,7 +5,7 @@ import android.os.Bundle
 import com.example.task4workingwithstorage.interfaces.IServiceRequestListener
 import com.example.task4workingwithstorage.ui.main.MainFragment
 
-class MainActivity : AppCompatActivity(), IServiceRequestListener {
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,11 +17,4 @@ class MainActivity : AppCompatActivity(), IServiceRequestListener {
         }
     }
 
-    override fun delete() {
-        TODO("Not yet implemented")
-    }
-
-    override fun add() {
-        TODO("Not yet implemented")
-    }
 }

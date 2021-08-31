@@ -14,22 +14,28 @@ import com.example.task4workingwithstorage.interfaces.IServiceRequestListener
 import com.example.task4workingwithstorage.models.ServiceRequest
 import com.example.task4workingwithstorage.ui.main.adapters.RecyclerViewAdapter
 import com.example.task4workingwithstorage.viewModel.ServiceRequestViewModel
-import org.jetbrains.anko.doAsync
+
 import java.util.*
 
-class MainFragment : Fragment() {
+class MainFragment : Fragment(), IServiceRequestListener {
 
     companion object {
         fun newInstance() = MainFragment()
     }
 
-    private var mainActivityListener: IServiceRequestListener? = null
+    //private var mainActivityListener: IServiceRequestListener? = null
 
     private var _binding: MainFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private val recyclerViewAdapter = mainActivityListener?.let { RecyclerViewAdapter(it) }
+    private val recyclerViewAdapter = RecyclerViewAdapter(this)
     private var serviceRequestViewModel: ServiceRequestViewModel? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        //mainActivityListener = this as IServiceRequestListener
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,15 +65,15 @@ class MainFragment : Fragment() {
 
         serviceRequestViewModel?.allServiceRequests?.observe(viewLifecycleOwner, Observer{ serviceRequests->
             // Data bind the recycler view
-            recyclerViewAdapter?.submitList(serviceRequests)
+            recyclerViewAdapter.submitList(serviceRequests)
             println(serviceRequests.size)
         })
 
         binding.floatingActionAdd.setOnClickListener {
-            println("clock")
-            doAsync {
+            //println("clock")
+            //doAsync {
                 serviceRequestViewModel?.insert(ServiceRequest(null, "vanya", Date(), "vasya" ))
-            }
+            //}
         }
 
     }
@@ -78,15 +84,14 @@ class MainFragment : Fragment() {
         // TODO: Use the ViewModel
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        mainActivityListener = context as IServiceRequestListener
-
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
+    override fun delete() {
+        TODO("Not yet implemented")
+    }
+
 
 }

@@ -23,7 +23,9 @@ class RecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ServiceRequestViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        //holder.bind(getItem(position))
+        val current: ServiceRequest = getItem(position)
+        holder.bind(current)
     }
 
     private companion object {

@@ -13,5 +13,5 @@ interface ServiceRequestDAO{
     fun allServiceRequests(): LiveData<List<ServiceRequest>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(serviceRequests: ServiceRequest)
+    suspend fun insert(serviceRequests: ServiceRequest)
 }
