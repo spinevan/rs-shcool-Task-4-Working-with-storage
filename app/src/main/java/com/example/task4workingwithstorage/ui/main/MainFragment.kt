@@ -72,7 +72,7 @@ class MainFragment : Fragment(), IServiceRequestListener {
         binding.floatingActionAdd.setOnClickListener {
             //println("clock")
             //doAsync {
-                serviceRequestViewModel?.insert(ServiceRequest(null, "vanya", Date(), "vasya" ))
+                serviceRequestViewModel?.insert(ServiceRequest(null, "Иван Владимирович С.", Date(), "Алексей Иванов" ))
             //}
         }
 

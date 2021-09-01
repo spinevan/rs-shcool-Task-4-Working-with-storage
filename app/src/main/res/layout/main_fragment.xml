@@ -21,7 +21,7 @@
             android:layout_height="?attr/actionBarSize"
             android:fitsSystemWindows="true"
             app:navigationContentDescription="Back"
-            app:title="Task 4: Working with database" />
+            app:title="Petrovskiy: Текущая запись" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
