@@ -24,6 +24,11 @@ class ServiceRequestViewHolder(
             binding.dateTime.text = formatter.format(serviceRequest.dateTime as Date)
         }
         binding.master.text = serviceRequest.master
+
+        binding.btnDelete.setOnClickListener {
+            listener.delete(serviceRequest)
+        }
+
     }
 
 

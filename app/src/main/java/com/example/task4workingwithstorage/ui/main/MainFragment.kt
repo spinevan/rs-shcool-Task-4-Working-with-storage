@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.task4workingwithstorage.R
 import com.example.task4workingwithstorage.databinding.MainFragmentBinding
+import com.example.task4workingwithstorage.interfaces.IMainActivityNav
 import com.example.task4workingwithstorage.interfaces.IServiceRequestListener
 import com.example.task4workingwithstorage.models.ServiceRequest
 import com.example.task4workingwithstorage.ui.main.adapters.RecyclerViewAdapter
@@ -23,7 +24,7 @@ class MainFragment : Fragment(), IServiceRequestListener {
         fun newInstance() = MainFragment()
     }
 
-    //private var mainActivityListener: IServiceRequestListener? = null
+    private var mainActivityListener: IMainActivityNav? = null
 
     private var _binding: MainFragmentBinding? = null
     private val binding get() = _binding!!
@@ -33,8 +34,7 @@ class MainFragment : Fragment(), IServiceRequestListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //mainActivityListener = this as IServiceRequestListener
-
+        mainActivityListener = context as IMainActivityNav
     }
 
     override fun onCreateView(
@@ -59,10 +59,6 @@ class MainFragment : Fragment(), IServiceRequestListener {
             adapter = recyclerViewAdapter
         }
 
-//        serviceRequestViewModel.allServiceRequests.observeForever(this, Observer{
-//            servisceRequests
-//        } )
-
         serviceRequestViewModel?.allServiceRequests?.observe(viewLifecycleOwner, Observer{ serviceRequests->
             // Data bind the recycler view
             recyclerViewAdapter.submitList(serviceRequests)
@@ -70,18 +66,10 @@ class MainFragment : Fragment(), IServiceRequestListener {
         })
 
         binding.floatingActionAdd.setOnClickListener {
-            //println("clock")
-            //doAsync {
-                serviceRequestViewModel?.insert(ServiceRequest(null, "Иван Владимирович С.", Date(), "Алексей Иванов" ))
-            //}
+            //serviceRequestViewModel?.insert(ServiceRequest(null, "Иван Владимирович С.", Date(), "Алексей Иванов" ))
+            mainActivityListener?.openCreateFragment()
         }
 
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        //serviceRequestViewModel = ViewModelProvider(this).get(ServiceRequestViewModel::class.java)
-        // TODO: Use the ViewModel
     }
 
     override fun onDestroyView() {
@@ -89,8 +77,8 @@ class MainFragment : Fragment(), IServiceRequestListener {
         _binding = null
     }
 
-    override fun delete() {
-        TODO("Not yet implemented")
+    override fun delete(serviceRequest: ServiceRequest) {
+        serviceRequestViewModel?.delete(serviceRequest)
     }
 
 

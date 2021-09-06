@@ -1,10 +1,7 @@
 package com.example.task4workingwithstorage.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.example.task4workingwithstorage.models.ServiceRequest
 
 @Dao
@@ -14,4 +11,8 @@ interface ServiceRequestDAO{
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(serviceRequests: ServiceRequest)
+
+    @Delete
+    suspend fun delete(serviceRequests: ServiceRequest)
+
 }

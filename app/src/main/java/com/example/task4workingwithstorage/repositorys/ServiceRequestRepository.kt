@@ -21,4 +21,10 @@ class ServiceRequestRepository(application: Application) {
         db.serviceRequestDao().insert(serviceRequest)
     }
 
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun delete(serviceRequest: ServiceRequest) {
+        db.serviceRequestDao().delete(serviceRequest)
+    }
+
 }

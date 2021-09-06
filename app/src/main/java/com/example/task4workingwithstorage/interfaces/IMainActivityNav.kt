@@ -2,8 +2,9 @@ package com.example.task4workingwithstorage.interfaces
 
 import com.example.task4workingwithstorage.models.ServiceRequest
 
-interface IServiceRequestListener {
+interface IMainActivityNav {
 
-    fun delete(serviceRequest: ServiceRequest)
+    fun openCreateFragment()
+    fun openUpdateFragment(id: String)
 
 }

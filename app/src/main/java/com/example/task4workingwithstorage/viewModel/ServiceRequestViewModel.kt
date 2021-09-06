@@ -28,6 +28,13 @@ class ServiceRequestViewModel(application: Application): AndroidViewModel(applic
             _serviceRequestRepository.insert(serviceRequest)
         }
     }
+
+    fun delete(serviceRequest: ServiceRequest) {
+        viewModelScope.launch {
+            _serviceRequestRepository.delete(serviceRequest)
+        }
+    }
+
         //_serviceRequestRepository.insert(serviceRequest)
 
 
