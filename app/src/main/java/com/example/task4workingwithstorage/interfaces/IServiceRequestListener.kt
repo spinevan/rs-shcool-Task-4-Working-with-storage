@@ -6,4 +6,6 @@ interface IServiceRequestListener {
 
     fun delete(serviceRequest: ServiceRequest)
 
+    fun open(id: Long)
+
 }

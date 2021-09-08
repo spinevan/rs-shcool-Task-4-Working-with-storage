@@ -5,6 +5,6 @@ import com.example.task4workingwithstorage.models.ServiceRequest
 interface IMainActivityNav {
 
     fun openCreateFragment()
-    fun openUpdateFragment(id: String)
+    fun openUpdateFragment(id: Long)
 
 }

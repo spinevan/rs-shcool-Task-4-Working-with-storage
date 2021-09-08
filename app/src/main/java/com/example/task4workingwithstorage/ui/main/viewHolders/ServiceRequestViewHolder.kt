@@ -29,15 +29,14 @@ class ServiceRequestViewHolder(
             listener.delete(serviceRequest)
         }
 
+        binding.cardBody.setOnClickListener {
+            serviceRequest.id?.let { it1 -> listener.open(it1) }
+        }
+
     }
 
 
-
-
-
     private companion object {
-
-        private const val START_TIME = "00:00:00"
 
     }
 }

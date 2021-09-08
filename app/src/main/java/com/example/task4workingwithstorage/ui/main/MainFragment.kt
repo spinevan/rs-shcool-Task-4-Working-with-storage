@@ -81,5 +81,9 @@ class MainFragment : Fragment(), IServiceRequestListener {
         serviceRequestViewModel?.delete(serviceRequest)
     }
 
+    override fun open(id: Long) {
+        mainActivityListener?.openUpdateFragment(id)
+    }
+
 
 }

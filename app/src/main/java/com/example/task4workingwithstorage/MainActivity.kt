@@ -29,8 +29,12 @@ class MainActivity : AppCompatActivity(), IMainActivityNav {
 
     }
 
-    override fun openUpdateFragment(id: String) {
-        TODO("Not yet implemented")
+    override fun openUpdateFragment(id: Long) {
+        val createUpdateFragment: CreateUpdateFragment = CreateUpdateFragment.newInstance(id)
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.container, createUpdateFragment)
+            .addToBackStack(createUpdateFragment::class.simpleName)
+            .commit()
     }
 
 }

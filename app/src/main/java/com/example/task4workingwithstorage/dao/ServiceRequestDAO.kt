@@ -15,4 +15,7 @@ interface ServiceRequestDAO{
     @Delete
     suspend fun delete(serviceRequests: ServiceRequest)
 
+    @Query("SELECT * FROM service_requests_table WHERE id = :id")
+    fun getById(id: Long?): ServiceRequest
+
 }

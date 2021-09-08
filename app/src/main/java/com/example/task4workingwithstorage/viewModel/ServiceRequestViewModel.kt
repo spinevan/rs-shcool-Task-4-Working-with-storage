@@ -35,6 +35,10 @@ class ServiceRequestViewModel(application: Application): AndroidViewModel(applic
         }
     }
 
+    suspend fun getById(id: Long) :ServiceRequest {
+        return _serviceRequestRepository.getById(id)
+    }
+
         //_serviceRequestRepository.insert(serviceRequest)
 
 
