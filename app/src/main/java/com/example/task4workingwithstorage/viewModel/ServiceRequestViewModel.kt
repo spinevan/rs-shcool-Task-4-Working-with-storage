@@ -19,8 +19,10 @@ class ServiceRequestViewModel(application: Application): AndroidViewModel(applic
 //    }
 
     private val _serviceRequestRepository: ServiceRequestRepository = ServiceRequestRepository(application)
+    private val context = getApplication<Application>().applicationContext
 
-    val allServiceRequests: LiveData<List<ServiceRequest>> = _serviceRequestRepository.allServiceRequests()
+    val allServiceRequests: LiveData<List<ServiceRequest>> = _serviceRequestRepository.allServiceRequests(context)
+
 
 
     fun insert(serviceRequest: ServiceRequest) {

@@ -2,11 +2,13 @@ package com.example.task4workingwithstorage
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import com.example.task4workingwithstorage.interfaces.IMainActivityNav
 import com.example.task4workingwithstorage.interfaces.IServiceRequestListener
 import com.example.task4workingwithstorage.models.ServiceRequest
 import com.example.task4workingwithstorage.ui.main.CreateUpdateFragment
 import com.example.task4workingwithstorage.ui.main.MainFragment
+import com.example.task4workingwithstorage.ui.main.SettingsFragment
 
 class MainActivity : AppCompatActivity(), IMainActivityNav {
 
@@ -35,6 +37,12 @@ class MainActivity : AppCompatActivity(), IMainActivityNav {
         transaction.replace(R.id.container, createUpdateFragment)
             .addToBackStack(createUpdateFragment::class.simpleName)
             .commit()
+    }
+
+    override fun openPreferencesFragment() {
+        val fragment: Fragment = SettingsFragment()
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.container, fragment).addToBackStack(SettingsFragment::class.simpleName).commit()
     }
 
 }

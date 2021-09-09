@@ -9,6 +9,15 @@ interface ServiceRequestDAO{
     @Query("SELECT * FROM service_requests_table ORDER BY id DESC")
     fun allServiceRequests(): LiveData<List<ServiceRequest>>
 
+    @Query("SELECT * FROM service_requests_table ORDER BY name")
+    fun allServiceRequestsSortByName(): LiveData<List<ServiceRequest>>
+
+    @Query("SELECT * FROM service_requests_table ORDER BY date_time")
+    fun allServiceRequestsSortByDate(): LiveData<List<ServiceRequest>>
+
+    @Query("SELECT * FROM service_requests_table ORDER BY master")
+    fun allServiceRequestsSortByMaster(): LiveData<List<ServiceRequest>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(serviceRequests: ServiceRequest)
 

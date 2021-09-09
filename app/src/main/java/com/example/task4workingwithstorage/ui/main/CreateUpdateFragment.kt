@@ -62,10 +62,10 @@ class CreateUpdateFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            id = it.getLong(ID_SERVICE_REQUEST)
+            id = it.getLong(ID_SERVICE_REQUEST, -1)
         }
 
-        if ( id != null ) {
+        if ( id!! > 0 ) {
             println("это ид записи")
             println(id)
 
@@ -89,7 +89,7 @@ class CreateUpdateFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if ( id != null) {
+        if ( id!! > 0 ) {
             loadData()
             binding.textTitle.text = "Редактирование записи на сервис"
         }

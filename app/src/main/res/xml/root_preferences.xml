@@ -1,0 +1,21 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        android:title="Сортировка"
+        android:key="sorting_settings">
+        <ListPreference
+            android:entries="@array/entries"
+            android:entryValues="@array/entry_values"
+            android:key="sortingBy"
+            android:summary="@string/list_sorting_summary"
+            android:title="@string/list_sorting_title">
+        </ListPreference>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="СУБД">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="useCursor"
+            android:title="Использовать курсор" />
+    </PreferenceCategory>
+</PreferenceScreen>

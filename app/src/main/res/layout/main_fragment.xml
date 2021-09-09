@@ -21,7 +21,8 @@
             android:layout_height="?attr/actionBarSize"
             android:fitsSystemWindows="true"
             app:navigationContentDescription="Back"
-            app:title="Petrovskiy: Текущая запись" />
+            app:title="Планировщик записи"
+            app:menu="@menu/home_app_bar_menu"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 

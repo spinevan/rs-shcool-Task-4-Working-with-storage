@@ -70,6 +70,17 @@ class MainFragment : Fragment(), IServiceRequestListener {
             mainActivityListener?.openCreateFragment()
         }
 
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.preferences -> {
+                    // Handle favorite icon press
+                    mainActivityListener?.openPreferencesFragment()
+                    true
+                }
+                else -> false
+            }
+        }
+
     }
 
     override fun onDestroyView() {
