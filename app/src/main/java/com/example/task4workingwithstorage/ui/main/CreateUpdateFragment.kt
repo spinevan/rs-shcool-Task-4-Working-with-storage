@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.example.task4workingwithstorage.R
 import com.example.task4workingwithstorage.databinding.FragmentCreateUpdateBinding
 import com.example.task4workingwithstorage.databinding.MainFragmentBinding
@@ -15,6 +16,7 @@ import com.example.task4workingwithstorage.models.ServiceRequest
 import com.example.task4workingwithstorage.viewModel.ServiceRequestViewModel
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
+import kotlinx.coroutines.*
 import org.jetbrains.annotations.NotNull
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -32,9 +34,30 @@ class CreateUpdateFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var serviceRequestViewModel: ServiceRequestViewModel? = null
+    var serviceRequest: ServiceRequest? = null
 
     private var dateTime: Calendar = Calendar.getInstance()
+    val uiScope = CoroutineScope(Dispatchers.Main)
+    val bgDispatcher: CoroutineDispatcher = Dispatchers.IO
 
+    private fun loadData() = uiScope.launch {
+        //showLoading // ui thread
+        serviceRequest = withContext(bgDispatcher) { // background thread
+            return@withContext serviceRequestViewModel?.getById(id!!)
+        }
+        // ui thread
+        serviceRequest?.let {
+            binding.clientName.setText( it.name )
+            binding.masterName.setText( it.master )
+            val calendar = Calendar.getInstance()
+            if (it.dateTime != null) {
+                calendar.time = it.dateTime
+            }
+            dateTime = calendar
+            setTextDate()
+            setTextTime()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +68,7 @@ class CreateUpdateFragment : Fragment() {
         if ( id != null ) {
             println("это ид записи")
             println(id)
+
         }
 
     }
@@ -64,6 +88,11 @@ class CreateUpdateFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if ( id != null) {
+            loadData()
+            binding.textTitle.text = "Редактирование записи на сервис"
+        }
 
         binding.dateText.setOnFocusChangeListener { textView, focused ->
             if (focused) {
@@ -86,10 +115,21 @@ class CreateUpdateFragment : Fragment() {
         }
 
         binding.btnAdd.setOnClickListener {
-            val serviceRequst = ServiceRequest(null,
-                binding.clientName.text.toString(), dateTime.time,
-                binding.masterName.text.toString() )
-                serviceRequestViewModel?.insert(serviceRequst)
+            if ( serviceRequest != null) {
+                serviceRequest?.name = binding.clientName.text.toString()
+                serviceRequest?.master = binding.masterName.text.toString()
+                serviceRequest?.dateTime = dateTime.time
+                serviceRequestViewModel?.update(serviceRequest!!)
+            } else {
+                val newServiceRequst = ServiceRequest(
+                    null,
+                    binding.clientName.text.toString(),
+                    dateTime.time,
+                    binding.masterName.text.toString()
+                )
+                serviceRequestViewModel?.insert(newServiceRequst)
+            }
+
         }
 
         setTextDate()

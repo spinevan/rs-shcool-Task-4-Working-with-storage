@@ -39,6 +39,12 @@ class ServiceRequestViewModel(application: Application): AndroidViewModel(applic
         return _serviceRequestRepository.getById(id)
     }
 
+    fun update(serviceRequest: ServiceRequest) {
+        viewModelScope.launch {
+            _serviceRequestRepository.update(serviceRequest)
+        }
+    }
+
         //_serviceRequestRepository.insert(serviceRequest)
 
 

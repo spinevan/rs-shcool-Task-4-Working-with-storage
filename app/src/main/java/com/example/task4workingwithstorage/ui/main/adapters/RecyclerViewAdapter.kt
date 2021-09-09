@@ -38,7 +38,8 @@ class RecyclerViewAdapter(
 
             override fun areContentsTheSame(oldItem: ServiceRequest, newItem: ServiceRequest): Boolean {
                 return oldItem.id == newItem.id &&
-                        oldItem.name == newItem.name
+                        oldItem.name == newItem.name  &&
+                        oldItem.dateTime == newItem.dateTime
             }
 
             override fun getChangePayload(oldItem: ServiceRequest, newItem: ServiceRequest) = Any()

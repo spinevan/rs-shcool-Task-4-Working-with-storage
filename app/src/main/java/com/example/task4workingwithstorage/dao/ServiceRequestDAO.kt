@@ -18,4 +18,7 @@ interface ServiceRequestDAO{
     @Query("SELECT * FROM service_requests_table WHERE id = :id")
     fun getById(id: Long?): ServiceRequest
 
+    @Update
+    suspend fun update(serviceRequests: ServiceRequest)
+
 }
