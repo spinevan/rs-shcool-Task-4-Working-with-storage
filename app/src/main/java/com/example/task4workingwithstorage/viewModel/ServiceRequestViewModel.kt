@@ -21,7 +21,7 @@ class ServiceRequestViewModel(application: Application): AndroidViewModel(applic
     private val _serviceRequestRepository: ServiceRequestRepository = ServiceRequestRepository(application)
     private val context = getApplication<Application>().applicationContext
 
-    val allServiceRequests: LiveData<List<ServiceRequest>> = _serviceRequestRepository.allServiceRequests(context)
+    var allServiceRequests: LiveData<List<ServiceRequest>> = _serviceRequestRepository.allServiceRequests(context)
 
 
 
@@ -45,6 +45,10 @@ class ServiceRequestViewModel(application: Application): AndroidViewModel(applic
         viewModelScope.launch {
             _serviceRequestRepository.update(serviceRequest)
         }
+    }
+
+    suspend fun getAll(): LiveData<List<ServiceRequest>> {
+        return _serviceRequestRepository.allServiceRequests(context)
     }
 
         //_serviceRequestRepository.insert(serviceRequest)

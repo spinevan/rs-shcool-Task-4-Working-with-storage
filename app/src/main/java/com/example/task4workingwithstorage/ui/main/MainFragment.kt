@@ -1,5 +1,7 @@
 package com.example.task4workingwithstorage.ui.main
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.task4workingwithstorage.R
 import com.example.task4workingwithstorage.databinding.MainFragmentBinding
@@ -15,6 +18,7 @@ import com.example.task4workingwithstorage.interfaces.IServiceRequestListener
 import com.example.task4workingwithstorage.models.ServiceRequest
 import com.example.task4workingwithstorage.ui.main.adapters.RecyclerViewAdapter
 import com.example.task4workingwithstorage.viewModel.ServiceRequestViewModel
+import kotlinx.coroutines.*
 
 import java.util.*
 
@@ -32,9 +36,23 @@ class MainFragment : Fragment(), IServiceRequestListener {
     private val recyclerViewAdapter = RecyclerViewAdapter(this)
     private var serviceRequestViewModel: ServiceRequestViewModel? = null
 
+    val uiScope = CoroutineScope(Dispatchers.Main)
+    val bgDispatcher: CoroutineDispatcher = Dispatchers.IO
+
+    private fun loadData() = uiScope.launch {
+        //showLoading // ui thread
+        val updatedServiceRequest = withContext(bgDispatcher) { // background thread
+            return@withContext serviceRequestViewModel?.getAll()
+        }
+        updatedServiceRequest?.observe(viewLifecycleOwner, Observer{ serviceRequests->
+            recyclerViewAdapter.submitList(serviceRequests)
+        })
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainActivityListener = context as IMainActivityNav
+
     }
 
     override fun onCreateView(
@@ -62,7 +80,7 @@ class MainFragment : Fragment(), IServiceRequestListener {
         serviceRequestViewModel?.allServiceRequests?.observe(viewLifecycleOwner, Observer{ serviceRequests->
             // Data bind the recycler view
             recyclerViewAdapter.submitList(serviceRequests)
-            println(serviceRequests.size)
+            //println(serviceRequests.size)
         })
 
         binding.floatingActionAdd.setOnClickListener {
@@ -81,6 +99,11 @@ class MainFragment : Fragment(), IServiceRequestListener {
             }
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadData()
     }
 
     override fun onDestroyView() {
