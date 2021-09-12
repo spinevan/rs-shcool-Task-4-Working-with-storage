@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.example.task4workingwithstorage.DATABASE_NAME
 import com.example.task4workingwithstorage.dao.ServiceRequestDAO
 import com.example.task4workingwithstorage.models.ServiceRequest
 
@@ -20,7 +21,8 @@ abstract class RoomSingleton : RoomDatabase(){
                 INSTANCE = Room.databaseBuilder(
                     context,
                     RoomSingleton::class.java,
-                    "roomdb")
+                    DATABASE_NAME
+                )
                     .build()
             }
 

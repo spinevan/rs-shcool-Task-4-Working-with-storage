@@ -18,11 +18,12 @@ class ServiceRequestViewModel(application: Application): AndroidViewModel(applic
 //        db.serviceRequestDao().insert(serviceRequest)
 //    }
 
-    private val _serviceRequestRepository: ServiceRequestRepository = ServiceRequestRepository(application)
     private val context = getApplication<Application>().applicationContext
+    //private val _serviceRequestRepository: ServiceRequestRepository = ServiceRequestRepository(application, context, true)
+
+    private val _serviceRequestRepository: ServiceRequestRepository = ServiceRequestRepository(application, context)
 
     var allServiceRequests: LiveData<List<ServiceRequest>> = _serviceRequestRepository.allServiceRequests(context)
-
 
 
     fun insert(serviceRequest: ServiceRequest) {
