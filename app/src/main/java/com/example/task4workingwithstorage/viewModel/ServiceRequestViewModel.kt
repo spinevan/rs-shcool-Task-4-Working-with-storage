@@ -1,59 +1,66 @@
 package com.example.task4workingwithstorage.viewModel
 
 import android.app.Application
+import android.preference.PreferenceManager
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.example.task4workingwithstorage.LOG_TAG
 import com.example.task4workingwithstorage.models.ServiceRequest
 import com.example.task4workingwithstorage.repositorys.ServiceRequestRepository
 import com.example.task4workingwithstorage.room.RoomSingleton
 import kotlinx.coroutines.launch
 
 class ServiceRequestViewModel(application: Application): AndroidViewModel(application){
-//    private val db: RoomSingleton = RoomSingleton.getInstance(application)
-//
-//    internal val allServiceRequests : LiveData<List<ServiceRequest>> = db.serviceRequestDao().allServiceRequests()
-//
-//    fun insert(serviceRequest:ServiceRequest){
-//        db.serviceRequestDao().insert(serviceRequest)
-//    }
 
-    private val context = getApplication<Application>().applicationContext
+    var useCursor = true
 
-    private val _serviceRequestRepository: ServiceRequestRepository = ServiceRequestRepository(application, context, true)
-    //private val _serviceRequestRepository: ServiceRequestRepository = ServiceRequestRepository(application, context)
+    init {
+        val sharedPrefs =  PreferenceManager.getDefaultSharedPreferences(getApplication<Application>().applicationContext);
+        useCursor = sharedPrefs.getBoolean("useCursor", true)
+        changeDAO()
+    }
 
-    var allServiceRequests: LiveData<List<ServiceRequest>> = _serviceRequestRepository.allServiceRequests(context)
+    private var _serviceRequestRepository: ServiceRequestRepository? = null
 
+    var allServiceRequests: LiveData<List<ServiceRequest>> = _serviceRequestRepository!!.allServiceRequests(getApplication<Application>().applicationContext)
 
     fun insert(serviceRequest: ServiceRequest) {
         viewModelScope.launch {
-            _serviceRequestRepository.insert(serviceRequest)
+            _serviceRequestRepository!!.insert(serviceRequest)
         }
     }
 
     fun delete(serviceRequest: ServiceRequest) {
         viewModelScope.launch {
-            _serviceRequestRepository.delete(serviceRequest)
+            _serviceRequestRepository!!.delete(serviceRequest)
         }
     }
 
     suspend fun getById(id: Long) :ServiceRequest {
-        return _serviceRequestRepository.getById(id)
+        return _serviceRequestRepository!!.getById(id)
     }
 
     fun update(serviceRequest: ServiceRequest) {
         viewModelScope.launch {
-            _serviceRequestRepository.update(serviceRequest)
+            _serviceRequestRepository!!.update(serviceRequest)
         }
     }
 
     suspend fun getAll(): LiveData<List<ServiceRequest>> {
-        return _serviceRequestRepository.allServiceRequests(context)
+        return _serviceRequestRepository!!.allServiceRequests(getApplication<Application>().applicationContext)
     }
 
-        //_serviceRequestRepository.insert(serviceRequest)
+    fun changeDAO() {
 
+        if ( useCursor ) {
+            _serviceRequestRepository = ServiceRequestRepository(getApplication<Application>(), getApplication<Application>().applicationContext, true)
+        } else {
+            _serviceRequestRepository = ServiceRequestRepository(getApplication<Application>(), getApplication<Application>().applicationContext)
+        }
+
+    }
 
 
 }

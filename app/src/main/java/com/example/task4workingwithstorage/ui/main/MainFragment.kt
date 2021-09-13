@@ -1,9 +1,11 @@
 package com.example.task4workingwithstorage.ui.main
 
+import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.preference.PreferenceManager
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -43,7 +45,7 @@ class MainFragment : Fragment(), IServiceRequestListener {
         val updatedServiceRequest = withContext(bgDispatcher) { // background thread
             return@withContext serviceRequestViewModel?.getAll()
         }
-        updatedServiceRequest?.observe(viewLifecycleOwner, Observer{ serviceRequests->
+        updatedServiceRequest?.observe(viewLifecycleOwner, { serviceRequests->
             recyclerViewAdapter.submitList(serviceRequests)
         })
     }
@@ -65,7 +67,6 @@ class MainFragment : Fragment(), IServiceRequestListener {
         val view = binding.root
         return view
 
-        //return inflater.inflate(R.layout.main_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -76,14 +77,12 @@ class MainFragment : Fragment(), IServiceRequestListener {
             adapter = recyclerViewAdapter
         }
 
-        serviceRequestViewModel?.allServiceRequests?.observe(viewLifecycleOwner, Observer{ serviceRequests->
-            // Data bind the recycler view
+        serviceRequestViewModel?.changeDAO()
+        serviceRequestViewModel?.allServiceRequests?.observe(viewLifecycleOwner, { serviceRequests->
             recyclerViewAdapter.submitList(serviceRequests)
-            //println(serviceRequests.size)
         })
 
         binding.floatingActionAdd.setOnClickListener {
-            //serviceRequestViewModel?.insert(ServiceRequest(null, "Иван Владимирович С.", Date(), "Алексей Иванов" ))
             mainActivityListener?.openCreateFragment()
         }
 
@@ -102,6 +101,15 @@ class MainFragment : Fragment(), IServiceRequestListener {
 
     override fun onResume() {
         super.onResume()
+
+        val sharedPrefs =  PreferenceManager.getDefaultSharedPreferences(context)
+        val useCursor = sharedPrefs.getBoolean("useCursor", false)
+
+        if (useCursor != serviceRequestViewModel?.useCursor ) {
+            serviceRequestViewModel?.useCursor = useCursor
+            serviceRequestViewModel?.changeDAO()
+        }
+
         loadData()
     }
 

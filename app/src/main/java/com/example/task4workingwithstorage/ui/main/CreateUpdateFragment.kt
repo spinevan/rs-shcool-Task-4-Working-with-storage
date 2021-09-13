@@ -26,8 +26,6 @@ import java.util.*
 
 class CreateUpdateFragment : Fragment() {
 
-//    private var _binding: CreateUpdateFragmentBinding? = null
-//    private val binding get() = _binding!!
     private var id: Long? = null
 
     private var _binding: FragmentCreateUpdateBinding? = null
@@ -76,7 +74,7 @@ class CreateUpdateFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_create_update, container, false)
         serviceRequestViewModel = ViewModelProvider(this).get(ServiceRequestViewModel::class.java)
@@ -145,7 +143,7 @@ class CreateUpdateFragment : Fragment() {
         val currentMonth: Int = dateTime.get(Calendar.MONTH)
         val currentDay: Int = dateTime.get(Calendar.DAY_OF_MONTH)
 
-        val datePickerDialog = DatePickerDialog.newInstance(DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+        val datePickerDialog = DatePickerDialog.newInstance({ view, year, monthOfYear, dayOfMonth ->
             val calendar = Calendar.getInstance()
             calendar.set(Calendar.YEAR, year)
             calendar.set(Calendar.MONTH, monthOfYear)
@@ -165,7 +163,7 @@ class CreateUpdateFragment : Fragment() {
 
     private fun openTimePickerDialog() {
 
-        val timePickerDialog = TimePickerDialog.newInstance(TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute, second ->
+        val timePickerDialog = TimePickerDialog.newInstance( { view, hourOfDay, minute, second ->
             val calendar = Calendar.getInstance()
             calendar.set(Calendar.YEAR, dateTime.get(Calendar.YEAR) )
             calendar.set(Calendar.MONTH, dateTime.get(Calendar.MONTH))
