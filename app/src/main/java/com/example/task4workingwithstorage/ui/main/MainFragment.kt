@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.task4workingwithstorage.R
 import com.example.task4workingwithstorage.databinding.MainFragmentBinding
@@ -113,6 +112,7 @@ class MainFragment : Fragment(), IServiceRequestListener {
 
     override fun delete(serviceRequest: ServiceRequest) {
         serviceRequestViewModel?.delete(serviceRequest)
+        loadData() //for cursor
     }
 
     override fun open(id: Long) {

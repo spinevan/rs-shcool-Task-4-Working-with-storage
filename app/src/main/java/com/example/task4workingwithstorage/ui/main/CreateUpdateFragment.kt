@@ -128,6 +128,7 @@ class CreateUpdateFragment : Fragment() {
                     binding.masterName.text.toString()
                 )
                 serviceRequestViewModel?.insert(newServiceRequst)
+                serviceRequest = newServiceRequst
             }
 
         }

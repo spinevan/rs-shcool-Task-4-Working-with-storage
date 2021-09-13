@@ -2,9 +2,9 @@ package com.example.task4workingwithstorage.repositorys
 
 import android.app.Application
 import android.content.Context
+import android.preference.PreferenceManager
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
-import androidx.preference.PreferenceManager
 import com.example.task4workingwithstorage.dao.ServiceRequestDAO
 import com.example.task4workingwithstorage.interfaces.IServiceRequestDAO
 import com.example.task4workingwithstorage.models.ServiceRequest

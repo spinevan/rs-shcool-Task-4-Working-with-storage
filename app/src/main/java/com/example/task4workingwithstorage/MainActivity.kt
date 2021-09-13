@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(), IMainActivityNav {
     }
 
     override fun openPreferencesFragment() {
-        val fragment: Fragment = SettingsFragment()
+        val fragment = SettingsFragment() as Fragment
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.container, fragment).addToBackStack(SettingsFragment::class.simpleName).commit()
     }
