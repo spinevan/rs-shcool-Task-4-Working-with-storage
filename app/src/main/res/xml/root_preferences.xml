@@ -13,7 +13,7 @@
 
     <PreferenceCategory android:title="СУБД">
         <SwitchPreference
-            android:defaultValue="true"
+            android:defaultValue="false"
             android:key="useCursor"
             android:title="Использовать курсор" />
     </PreferenceCategory>

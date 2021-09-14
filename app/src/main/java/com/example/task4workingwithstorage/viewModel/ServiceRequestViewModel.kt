@@ -14,11 +14,11 @@ import kotlinx.coroutines.launch
 
 class ServiceRequestViewModel(application: Application): AndroidViewModel(application){
 
-    var useCursor = true
+    var useCursor = false
 
     init {
         val sharedPrefs =  PreferenceManager.getDefaultSharedPreferences(getApplication<Application>().applicationContext);
-        useCursor = sharedPrefs.getBoolean("useCursor", true)
+        useCursor = sharedPrefs.getBoolean("useCursor", false)
         changeDAO()
     }
 

@@ -1,6 +1,5 @@
 package com.example.task4workingwithstorage.room
 
-import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.SQLException
@@ -27,12 +26,20 @@ class MySQLiteOpenHelper(context: Context) : SQLiteOpenHelper(
 
     companion object {
         private const val CREATE_TABLE_SQL =
-            "CREATE TABLE IF NOT EXISTS $TABLE_NAME (id REAL PRIMARY KEY AUTOINCREMENT, name VARCHAR(50), dateTime REAL, master VARCHAR(50) );"
+            "CREATE TABLE IF NOT EXISTS $TABLE_NAME (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, dateTime INTEGER, master TEXT );"
     }
 
     override fun onCreate(db: SQLiteDatabase) {
+
+        Log.d(LOG_TAG, "THIS IS CURSOR METHOD onCreateBD")
         try {
             db.execSQL(CREATE_TABLE_SQL)
+
+//            (1..6).forEach {
+//                readableDatabase.execSQL("INSERT INTO $TABLE_NAME (name, date_time, master) " +
+//                        " VALUES ('Клиент$it', '${Date().time}}', 'Мастер$it');")
+//            }
+
         } catch (exception: SQLException) {
             Log.e(LOG_TAG, "Exception while trying to create database", exception)
         }
