@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.task4workingwithstorage.LOG_TAG
+import com.example.task4workingwithstorage.USE_CURSOR_FIRST
 import com.example.task4workingwithstorage.models.ServiceRequest
 import com.example.task4workingwithstorage.repositorys.ServiceRequestRepository
 import com.example.task4workingwithstorage.room.RoomSingleton
@@ -14,11 +15,11 @@ import kotlinx.coroutines.launch
 
 class ServiceRequestViewModel(application: Application): AndroidViewModel(application){
 
-    var useCursor = false
+    var useCursor = USE_CURSOR_FIRST
 
     init {
         val sharedPrefs =  PreferenceManager.getDefaultSharedPreferences(getApplication<Application>().applicationContext);
-        useCursor = sharedPrefs.getBoolean("useCursor", false)
+        useCursor = sharedPrefs.getBoolean("useCursor", USE_CURSOR_FIRST)
         changeDAO()
     }
 
