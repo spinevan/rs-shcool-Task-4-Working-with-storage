@@ -1,21 +1,6 @@
 <resources>
     <string name="app_name">Task 4 Working with storage</string>
     <string name="sorting">Сортировка</string>
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
-
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
-
     <string name="list_sorting_title">Сортировать по</string>
     <string name="list_sorting_summary">Выберите поле сортировки</string>
     <string name="client_name">Имя клиента</string>
@@ -24,5 +9,4 @@
     <string name="addServiceRequest">Добавление записи на сервис</string>
     <string name="save">Сохранить</string>
     <string name="master">Мастер</string>
-
 </resources>
