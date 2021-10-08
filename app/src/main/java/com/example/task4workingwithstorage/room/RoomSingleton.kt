@@ -53,12 +53,7 @@ abstract class RoomSingleton : RoomDatabase(){
         }
 
         suspend fun populateDatabase(serviceRequestDao: ServiceRequestDAO) {
-            // Start the app with a clean database every time.
-            // Not needed if you only populate on creation.
 
-            Log.i("ShipStateDatabase", "populateDatabase")
-
-            //shipStates
             (1..6).forEach {
                 val item = ServiceRequest(
                     null,
@@ -67,13 +62,6 @@ abstract class RoomSingleton : RoomDatabase(){
                     "Мастер$it")
                 serviceRequestDao.insert(item)
             }
-
         }
-
     }
-
-
-
-
-
 }

@@ -1,8 +1,5 @@
 package com.example.task4workingwithstorage.ui.main
 
-import android.app.Application
-import android.content.Context
-import android.content.SharedPreferences
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -10,12 +7,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.task4workingwithstorage.R
 import com.example.task4workingwithstorage.databinding.MainFragmentBinding
 import com.example.task4workingwithstorage.interfaces.IMainActivityNav
-import com.example.task4workingwithstorage.interfaces.IServiceRequestListener
+import com.example.task4workingwithstorage.interfaces.IServiceRequestEditorListener
 import com.example.task4workingwithstorage.models.ServiceRequest
 import com.example.task4workingwithstorage.ui.main.adapters.RecyclerViewAdapter
 import com.example.task4workingwithstorage.viewModel.ServiceRequestViewModel
@@ -23,7 +19,7 @@ import kotlinx.coroutines.*
 
 import java.util.*
 
-class MainFragment : Fragment(), IServiceRequestListener {
+class MainFragment : Fragment(), IServiceRequestEditorListener {
 
     companion object {
         fun newInstance() = MainFragment()
@@ -40,15 +36,16 @@ class MainFragment : Fragment(), IServiceRequestListener {
     val uiScope = CoroutineScope(Dispatchers.Main)
     val bgDispatcher: CoroutineDispatcher = Dispatchers.IO
 
-    private fun loadData() = uiScope.launch {
-        //showLoading // ui thread
-        val updatedServiceRequest = withContext(bgDispatcher) { // background thread
-            return@withContext serviceRequestViewModel?.getAll()
-        }
-        updatedServiceRequest?.observe(viewLifecycleOwner, { serviceRequests->
-            recyclerViewAdapter.submitList(serviceRequests)
-        })
-    }
+//    Uncomment func if need use cursor
+//    private fun loadData() = uiScope.launch {
+//        //showLoading // ui thread
+//        val updatedServiceRequest = withContext(bgDispatcher) { // background thread
+//            return@withContext serviceRequestViewModel?.getAll()
+//        }
+//        updatedServiceRequest?.observe(viewLifecycleOwner, { serviceRequests->
+//            recyclerViewAdapter.submitList(serviceRequests)
+//        })
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,7 +93,6 @@ class MainFragment : Fragment(), IServiceRequestListener {
                 else -> false
             }
         }
-
     }
 
     override fun onResume() {
@@ -110,7 +106,8 @@ class MainFragment : Fragment(), IServiceRequestListener {
             serviceRequestViewModel?.changeDAO()
         }
 
-        loadData()
+        //loadData() //    Uncomment func if need use cursor
+        serviceRequestViewModel?.readAllServiceRequests()
     }
 
     override fun onDestroyView() {
@@ -120,12 +117,12 @@ class MainFragment : Fragment(), IServiceRequestListener {
 
     override fun delete(serviceRequest: ServiceRequest) {
         serviceRequestViewModel?.delete(serviceRequest)
-        loadData() //for cursor
+
+        //loadData() //for cursor //    Uncomment func if need use cursor
+        serviceRequestViewModel?.readAllServiceRequests()
     }
 
     override fun open(id: Long) {
         mainActivityListener?.openUpdateFragment(id)
     }
-
-
 }
