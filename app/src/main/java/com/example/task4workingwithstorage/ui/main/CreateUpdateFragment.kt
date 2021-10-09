@@ -1,35 +1,24 @@
 package com.example.task4workingwithstorage.ui.main
 
 import android.icu.text.SimpleDateFormat
-import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.HandlerThread
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import com.example.task4workingwithstorage.MainActivity
 import com.example.task4workingwithstorage.R
 import com.example.task4workingwithstorage.databinding.FragmentCreateUpdateBinding
-import com.example.task4workingwithstorage.databinding.MainFragmentBinding
 import com.example.task4workingwithstorage.models.ServiceRequest
 import com.example.task4workingwithstorage.viewModel.CreateUpdateViwModel
-import com.example.task4workingwithstorage.viewModel.ServiceRequestViewModel
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
-import kotlinx.coroutines.*
-import org.jetbrains.annotations.NotNull
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.Month
 import java.util.*
-
 
 class CreateUpdateFragment : Fragment() {
 
-    val canonicalName = "com.example.task4workingwithstorage.ui.main.CreateUpdateFragment"
+    val canonicalName = "com.example.task4WorkingWithStorage.ui.main.CreateUpdateFragment"
     private var id: Long? = null
 
     var createUpdateViwModel: CreateUpdateViwModel? = null
@@ -61,10 +50,10 @@ class CreateUpdateFragment : Fragment() {
 
         if ( id!! > 0 ) {
             createUpdateViwModel?.loadServiceRequest(id!!)
-            binding.textTitle.text = "Редактирование записи на сервис"
         }
+        setTextOnView(id!! > 0)
 
-        binding.dateText.setOnFocusChangeListener { textView, focused ->
+        binding.dateText.setOnFocusChangeListener { _, focused ->
             if (focused) {
                 openDataPickerDialog()
             }
@@ -74,7 +63,7 @@ class CreateUpdateFragment : Fragment() {
             openDataPickerDialog()
         }
 
-        binding.timeText.setOnFocusChangeListener { textView, focused ->
+        binding.timeText.setOnFocusChangeListener { _, focused ->
             if (focused) {
                 openTimePickerDialog()
             }
@@ -93,15 +82,16 @@ class CreateUpdateFragment : Fragment() {
                     it.serviceRequest?.dateTime = dateTime.time
                     it.update(createUpdateViwModel?.serviceRequest!!)
                 } else {
-                    val newServiceRequst = ServiceRequest(
+                    val newServiceRequest = ServiceRequest(
                         null,
                         binding.clientName.text.toString(),
                         dateTime.time,
                         binding.masterName.text.toString()
                     )
-                    it.insert(newServiceRequst)
-                    it.serviceRequest = newServiceRequst
+                    it.insert(newServiceRequest)
+                    it.serviceRequest = newServiceRequest
                 }
+                clickBack()
             }
         }
 
@@ -116,15 +106,13 @@ class CreateUpdateFragment : Fragment() {
 
     }
 
-
-
     private fun openDataPickerDialog() {
 
         val currentYear: Int = dateTime.get(Calendar.YEAR)
         val currentMonth: Int = dateTime.get(Calendar.MONTH)
         val currentDay: Int = dateTime.get(Calendar.DAY_OF_MONTH)
 
-        val datePickerDialog = DatePickerDialog.newInstance({ view, year, monthOfYear, dayOfMonth ->
+        val datePickerDialog = DatePickerDialog.newInstance({ _, year, monthOfYear, dayOfMonth ->
             val calendar = Calendar.getInstance()
             calendar.set(Calendar.YEAR, year)
             calendar.set(Calendar.MONTH, monthOfYear)
@@ -139,12 +127,12 @@ class CreateUpdateFragment : Fragment() {
 
         datePickerDialog.accentColor = resources.getColor(R.color.yellow_700)
 
-        getFragmentManager()?.let { datePickerDialog.show(it, "Datepickerdialog") }
+        getFragmentManager()?.let { datePickerDialog.show(it, "DatePickerDialog") }
     }
 
     private fun openTimePickerDialog() {
 
-        val timePickerDialog = TimePickerDialog.newInstance( { view, hourOfDay, minute, second ->
+        val timePickerDialog = TimePickerDialog.newInstance( { _, hourOfDay, minute, _ ->
             val calendar = Calendar.getInstance()
             calendar.set(Calendar.YEAR, dateTime.get(Calendar.YEAR) )
             calendar.set(Calendar.MONTH, dateTime.get(Calendar.MONTH))
@@ -175,6 +163,22 @@ class CreateUpdateFragment : Fragment() {
     private fun setTextTime() {
         val formatter = SimpleDateFormat("HH-mm")
         binding.timeText.setText( formatter.format(dateTime.timeInMillis) )
+    }
+
+    private fun setTextOnView(isNew: Boolean) {
+        if (isNew) {
+            binding.textTitle.text = getString(R.string.edit_service_request)
+            binding.btnAdd.text = getString(R.string.edit)
+        } else {
+            binding.textTitle.text = getString(R.string.addServiceRequest)
+            binding.btnAdd.text = getString(R.string.save)
+        }
+    }
+
+    private fun clickBack() {
+        if (context is MainActivity) {
+            (context as MainActivity).onBackPressed()
+        }
     }
 
     companion object {

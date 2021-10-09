@@ -9,4 +9,6 @@
     <string name="addServiceRequest">Добавление записи на сервис</string>
     <string name="save">Сохранить</string>
     <string name="master">Мастер</string>
+    <string name="edit_service_request">Редактирование записи на сервис</string>
+    <string name="edit">Изменить</string>
 </resources>

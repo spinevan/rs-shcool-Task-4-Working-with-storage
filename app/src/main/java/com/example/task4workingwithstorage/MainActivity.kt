@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity(), IMainActivityNav {
         commitTransactionWithBackStack(fragment, SettingsFragment.canonicalName)
     }
 
-    fun commitTransactionWithBackStack(fragment: Fragment, canonicalName: String) {
+    private fun commitTransactionWithBackStack(fragment: Fragment, canonicalName: String) {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.container, fragment).addToBackStack(canonicalName).commit()
     }
