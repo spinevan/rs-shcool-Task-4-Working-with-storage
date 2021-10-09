@@ -40,7 +40,6 @@ class MainFragment : Fragment(), IServiceRequestEditorListener {
         savedInstanceState: Bundle?
     ): View {
 
-        //serviceRequestViewModel = ViewModelProvider(this).get(ServiceRequestViewModel::class.java)
         _binding = MainFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
