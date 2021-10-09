@@ -76,7 +76,7 @@ class CreateUpdateFragment : Fragment() {
         binding.btnAdd.setOnClickListener {
 
             createUpdateViwModel?.let {
-                if ( it.serviceRequest != null) {
+                if ( it.serviceRequest?.id != null) {
                     it.serviceRequest?.name = binding.clientName.text.toString()
                     it.serviceRequest?.master = binding.masterName.text.toString()
                     it.serviceRequest?.dateTime = dateTime.time

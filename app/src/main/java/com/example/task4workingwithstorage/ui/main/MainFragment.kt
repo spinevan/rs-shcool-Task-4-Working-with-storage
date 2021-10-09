@@ -15,9 +15,6 @@ import com.example.task4workingwithstorage.interfaces.IServiceRequestEditorListe
 import com.example.task4workingwithstorage.models.ServiceRequest
 import com.example.task4workingwithstorage.ui.main.adapters.RecyclerViewAdapter
 import com.example.task4workingwithstorage.viewModel.ServiceRequestViewModel
-import kotlinx.coroutines.*
-
-import java.util.*
 
 class MainFragment : Fragment(), IServiceRequestEditorListener {
 
@@ -26,26 +23,10 @@ class MainFragment : Fragment(), IServiceRequestEditorListener {
     }
 
     private var mainActivityListener: IMainActivityNav? = null
-
     private var _binding: MainFragmentBinding? = null
     private val binding get() = _binding!!
-
     private val recyclerViewAdapter = RecyclerViewAdapter(this)
     private var serviceRequestViewModel: ServiceRequestViewModel? = null
-
-    val uiScope = CoroutineScope(Dispatchers.Main)
-    val bgDispatcher: CoroutineDispatcher = Dispatchers.IO
-
-//    Uncomment func if need use cursor
-//    private fun loadData() = uiScope.launch {
-//        //showLoading // ui thread
-//        val updatedServiceRequest = withContext(bgDispatcher) { // background thread
-//            return@withContext serviceRequestViewModel?.getAll()
-//        }
-//        updatedServiceRequest?.observe(viewLifecycleOwner, { serviceRequests->
-//            recyclerViewAdapter.submitList(serviceRequests)
-//        })
-//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,11 +40,8 @@ class MainFragment : Fragment(), IServiceRequestEditorListener {
     ): View {
 
         serviceRequestViewModel = ViewModelProvider(this).get(ServiceRequestViewModel::class.java)
-
         _binding = MainFragmentBinding.inflate(inflater, container, false)
-        val view = binding.root
-        return view
-
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -106,8 +84,7 @@ class MainFragment : Fragment(), IServiceRequestEditorListener {
             serviceRequestViewModel?.changeDAO()
         }
 
-        //loadData() //    Uncomment func if need use cursor
-        serviceRequestViewModel?.readAllServiceRequests()
+        serviceRequestViewModel?.updateViewData(viewLifecycleOwner, recyclerViewAdapter)
     }
 
     override fun onDestroyView() {
@@ -117,9 +94,7 @@ class MainFragment : Fragment(), IServiceRequestEditorListener {
 
     override fun delete(serviceRequest: ServiceRequest) {
         serviceRequestViewModel?.delete(serviceRequest)
-
-        //loadData() //for cursor //    Uncomment func if need use cursor
-        serviceRequestViewModel?.readAllServiceRequests()
+        serviceRequestViewModel?.updateViewData(viewLifecycleOwner, recyclerViewAdapter)
     }
 
     override fun open(id: Long) {
