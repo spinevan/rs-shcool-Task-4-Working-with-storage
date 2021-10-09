@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.task4workingwithstorage.R
 import com.example.task4workingwithstorage.databinding.MainFragmentBinding
@@ -26,7 +27,7 @@ class MainFragment : Fragment(), IServiceRequestEditorListener {
     private var _binding: MainFragmentBinding? = null
     private val binding get() = _binding!!
     private val recyclerViewAdapter = RecyclerViewAdapter(this)
-    private var serviceRequestViewModel: ServiceRequestViewModel? = null
+    private val serviceRequestViewModel: ServiceRequestViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +40,7 @@ class MainFragment : Fragment(), IServiceRequestEditorListener {
         savedInstanceState: Bundle?
     ): View {
 
-        serviceRequestViewModel = ViewModelProvider(this).get(ServiceRequestViewModel::class.java)
+        //serviceRequestViewModel = ViewModelProvider(this).get(ServiceRequestViewModel::class.java)
         _binding = MainFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -52,8 +53,8 @@ class MainFragment : Fragment(), IServiceRequestEditorListener {
             adapter = recyclerViewAdapter
         }
 
-        serviceRequestViewModel?.changeDAO()
-        serviceRequestViewModel?.allServiceRequests?.observe(viewLifecycleOwner, { serviceRequests->
+        serviceRequestViewModel.changeDAO()
+        serviceRequestViewModel.allServiceRequests.observe(viewLifecycleOwner, { serviceRequests->
             recyclerViewAdapter.submitList(serviceRequests)
         })
 
@@ -79,12 +80,12 @@ class MainFragment : Fragment(), IServiceRequestEditorListener {
         val sharedPrefs =  PreferenceManager.getDefaultSharedPreferences(context)
         val useCursor = sharedPrefs.getBoolean("useCursor", false)
 
-        if (useCursor != serviceRequestViewModel?.useCursor ) {
-            serviceRequestViewModel?.useCursor = useCursor
-            serviceRequestViewModel?.changeDAO()
+        if (useCursor != serviceRequestViewModel.useCursor ) {
+            serviceRequestViewModel.useCursor = useCursor
+            serviceRequestViewModel.changeDAO()
         }
 
-        serviceRequestViewModel?.updateViewData(viewLifecycleOwner, recyclerViewAdapter)
+        serviceRequestViewModel.updateViewData(viewLifecycleOwner, recyclerViewAdapter)
     }
 
     override fun onDestroyView() {
@@ -93,8 +94,8 @@ class MainFragment : Fragment(), IServiceRequestEditorListener {
     }
 
     override fun delete(serviceRequest: ServiceRequest) {
-        serviceRequestViewModel?.delete(serviceRequest)
-        serviceRequestViewModel?.updateViewData(viewLifecycleOwner, recyclerViewAdapter)
+        serviceRequestViewModel.delete(serviceRequest)
+        serviceRequestViewModel.updateViewData(viewLifecycleOwner, recyclerViewAdapter)
     }
 
     override fun open(id: Long) {

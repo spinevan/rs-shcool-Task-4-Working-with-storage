@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.task4workingwithstorage.MainActivity
 import com.example.task4workingwithstorage.R
@@ -21,7 +22,7 @@ class CreateUpdateFragment : Fragment() {
     val canonicalName = "com.example.task4WorkingWithStorage.ui.main.CreateUpdateFragment"
     private var id: Long? = null
 
-    var createUpdateViwModel: CreateUpdateViwModel? = null
+    private val createUpdateViwModel: CreateUpdateViwModel by activityViewModels()
 
     private var _binding: FragmentCreateUpdateBinding? = null
     private val binding get() = _binding!!
@@ -39,8 +40,7 @@ class CreateUpdateFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        createUpdateViwModel = ViewModelProvider(this).get(CreateUpdateViwModel::class.java)
-        id?.let { createUpdateViwModel?.loadServiceRequest(it) }
+        id?.let { createUpdateViwModel.loadServiceRequest(it) }
         _binding = FragmentCreateUpdateBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -49,7 +49,7 @@ class CreateUpdateFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if ( id!! > 0 ) {
-            createUpdateViwModel?.loadServiceRequest(id!!)
+            createUpdateViwModel.loadServiceRequest(id!!)
         }
         setTextOnView(id!! > 0)
 
@@ -75,12 +75,12 @@ class CreateUpdateFragment : Fragment() {
 
         binding.btnAdd.setOnClickListener {
 
-            createUpdateViwModel?.let {
+            createUpdateViwModel.let {
                 if ( it.serviceRequest?.id != null) {
                     it.serviceRequest?.name = binding.clientName.text.toString()
                     it.serviceRequest?.master = binding.masterName.text.toString()
                     it.serviceRequest?.dateTime = dateTime.time
-                    it.update(createUpdateViwModel?.serviceRequest!!)
+                    it.update(createUpdateViwModel.serviceRequest!!)
                 } else {
                     val newServiceRequest = ServiceRequest(
                         null,
@@ -95,7 +95,7 @@ class CreateUpdateFragment : Fragment() {
             }
         }
 
-        createUpdateViwModel?.serviceRequestPresenter?.observe(viewLifecycleOwner, {
+        createUpdateViwModel.serviceRequestPresenter?.observe(viewLifecycleOwner, {
             with(binding) {
                 clientName.setText(it.name)
                 masterName.setText(it.master)
