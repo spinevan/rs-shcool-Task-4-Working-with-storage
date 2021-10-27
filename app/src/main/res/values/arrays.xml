@@ -1,0 +1,12 @@
+<resources>
+    <string-array name="entries">
+        <item>Клиенту</item>
+        <item>Дате записи</item>
+        <item>Мастеру</item>
+    </string-array>
+    <string-array name="entry_values">
+        <item>name</item>
+        <item>dateTime</item>
+        <item>master</item>
+    </string-array>
+</resources>
