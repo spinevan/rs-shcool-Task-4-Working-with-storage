@@ -3,40 +3,36 @@ package com.example.task4workingwithstorage.ui.main.viewHolders
 import android.content.res.Resources
 import androidx.recyclerview.widget.RecyclerView
 import com.example.task4workingwithstorage.databinding.ServiceRequestViewBinding
-import com.example.task4workingwithstorage.interfaces.IServiceRequestListener
+import com.example.task4workingwithstorage.interfaces.IServiceRequestEditorListener
 import com.example.task4workingwithstorage.models.ServiceRequest
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.*
+import com.example.task4workingwithstorage.ui.main.presentors.ServiceRequestPresenter
 
 class ServiceRequestViewHolder(
     private val binding: ServiceRequestViewBinding,
-    private val listener: IServiceRequestListener,
+    private val listener: IServiceRequestEditorListener,
     private val resources: Resources
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    private val formatter = SimpleDateFormat("yyyy-MM-dd [HH:mm]", Locale.forLanguageTag("RU"))
+     fun bind(serviceRequest: ServiceRequest) {
 
-    fun bind(serviceRequest: ServiceRequest) {
+        val serviceRequestPresenter = ServiceRequestPresenter(serviceRequest)
 
-        binding.name.text = serviceRequest.name
-        if (serviceRequest.dateTime != null) {
-            binding.dateTime.text = formatter.format(serviceRequest.dateTime as Date)
-        }
-        binding.master.text = serviceRequest.master
+         with(binding) {
+             name.text = serviceRequestPresenter.name
+             master.text = serviceRequestPresenter.master
 
-        binding.btnDelete.setOnClickListener {
-            listener.delete(serviceRequest)
-        }
+             if (serviceRequest.dateTime != null) {
+                 dateTime.text =
+                     "${serviceRequestPresenter.date} [${serviceRequestPresenter.time}]"
+             }
 
-        binding.cardBody.setOnClickListener {
-            serviceRequest.id?.let { it1 -> listener.open(it1) }
-        }
+             btnDelete.setOnClickListener {
+                 listener.delete(serviceRequest)
+             }
 
-    }
-
-
-    private companion object {
-
+             cardBody.setOnClickListener {
+                 serviceRequest.id?.let { it1 -> listener.open(it1) }
+             }
+         }
     }
 }

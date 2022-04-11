@@ -12,5 +12,4 @@ interface IServiceRequestDAO {
     suspend fun delete(serviceRequests: ServiceRequest)
     fun getById(id: Long?): ServiceRequest
     suspend fun update(serviceRequests: ServiceRequest)
-
 }

@@ -31,7 +31,7 @@
                 android:id="@+id/clientName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Имя клиента" />
+                android:hint="@string/client_name" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:editable="false"
-                android:hint="Дата записи" />
+                android:hint="@string/request_date" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -67,14 +67,14 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:editable="false"
-                android:hint="Время" />
+                android:hint="@string/time" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:id="@+id/textTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Добавление записи на сервис"
+            android:text="@string/addServiceRequest"
             app:layout_constraintBottom_toTopOf="@+id/guideline2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -85,7 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:text="Сохранить"
+            android:text="@string/save"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -102,7 +102,7 @@
                 android:id="@+id/masterName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Мастер" />
+                android:hint="@string/master" />
         </com.google.android.material.textfield.TextInputLayout>
 
 

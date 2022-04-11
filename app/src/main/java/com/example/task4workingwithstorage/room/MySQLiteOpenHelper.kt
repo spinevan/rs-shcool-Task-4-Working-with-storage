@@ -1,6 +1,5 @@
 package com.example.task4workingwithstorage.room
 
-import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.SQLException
@@ -48,12 +47,7 @@ class MySQLiteOpenHelper(context: Context) : SQLiteOpenHelper(
         Log.d(LOG_TAG, "onUpgrade called")
     }
 
-    fun getCursorWithServiceRequests(): Cursor {
-        return readableDatabase.rawQuery("SELECT * FROM $TABLE_NAME", null)
-    }
-
-
-    inner class serviceRequestDao(): IServiceRequestDAO {
+    inner class ServiceRequestDao(): IServiceRequestDAO {
 
         private fun getListFromCursor(cursor: Cursor): List<ServiceRequest> {
 
@@ -78,40 +72,28 @@ class MySQLiteOpenHelper(context: Context) : SQLiteOpenHelper(
 
         override fun allServiceRequests(): LiveData<List<ServiceRequest>> {
             Log.d(LOG_TAG, "THIS IS CURSOR METHOD allServiceRequests!")
-
-            val cursor: Cursor = readableDatabase.rawQuery("SELECT * FROM $TABLE_NAME ORDER BY id DESC", null)
-            val resList = getListFromCursor(cursor)
-            val res = MutableLiveData<List<ServiceRequest>>().apply { postValue(resList) }
-
-            return res
+            return allServiceRequestsFromDB("SELECT * FROM $TABLE_NAME ORDER BY id DESC")
         }
 
         override fun allServiceRequestsSortByName(): LiveData<List<ServiceRequest>> {
             Log.d(LOG_TAG, "THIS IS CURSOR METHOD allServiceRequestsSortByName!")
-
-            val cursor: Cursor = readableDatabase.rawQuery("SELECT * FROM $TABLE_NAME ORDER BY name", null)
-            val resList = getListFromCursor(cursor)
-            val res = MutableLiveData<List<ServiceRequest>>().apply { postValue(resList) }
-
-            return res
+            return allServiceRequestsFromDB("SELECT * FROM $TABLE_NAME ORDER BY name")
         }
 
         override fun allServiceRequestsSortByDate(): LiveData<List<ServiceRequest>> {
             Log.d(LOG_TAG, "THIS IS CURSOR METHOD allServiceRequestsSortByDate!")
-
-            val cursor: Cursor = readableDatabase.rawQuery("SELECT * FROM $TABLE_NAME ORDER BY date_time", null)
-            val resList = getListFromCursor(cursor)
-            val res = MutableLiveData<List<ServiceRequest>>().apply { postValue(resList) }
-            return res
+            return allServiceRequestsFromDB("SELECT * FROM $TABLE_NAME ORDER BY date_time")
         }
 
         override fun allServiceRequestsSortByMaster(): LiveData<List<ServiceRequest>> {
             Log.d(LOG_TAG, "THIS IS CURSOR METHOD allServiceRequestsSortByMaster!")
+            return allServiceRequestsFromDB("SELECT * FROM $TABLE_NAME ORDER BY master")
+        }
 
-            val cursor: Cursor = readableDatabase.rawQuery("SELECT * FROM $TABLE_NAME ORDER BY master", null)
+        private fun allServiceRequestsFromDB(query: String): LiveData<List<ServiceRequest>> {
+            val cursor: Cursor = readableDatabase.rawQuery(query, null)
             val resList = getListFromCursor(cursor)
-            val res = MutableLiveData<List<ServiceRequest>>().apply { postValue(resList) }
-            return res
+            return MutableLiveData<List<ServiceRequest>>().apply { postValue(resList) }
         }
 
         override suspend fun insert(serviceRequests: ServiceRequest) {
@@ -155,12 +137,11 @@ class MySQLiteOpenHelper(context: Context) : SQLiteOpenHelper(
         override suspend fun update(serviceRequests: ServiceRequest) {
             Log.d(LOG_TAG, "THIS IS CURSOR METHOD update!")
 
-            readableDatabase.execSQL("UPDATE $TABLE_NAME " +
-                    " SET name = '${serviceRequests.name}', date_time = '${serviceRequests.dateTime?.time}', master = '${serviceRequests.master}'" +
-                    " WHERE id = ${serviceRequests.id}")
+            readableDatabase.execSQL(""" 
+                UPDATE $TABLE_NAME
+                | SET name = '${serviceRequests.name}', date_time = '${serviceRequests.dateTime?.time}', master = '${serviceRequests.master}'
+                |   WHERE id = ${serviceRequests.id}""".trimMargin())
 
         }
-
     }
-
 }

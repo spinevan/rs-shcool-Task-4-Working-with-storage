@@ -1,5 +1,4 @@
 <resources>
-    <!-- Reply Preference -->
     <string-array name="entries">
         <item>Клиенту</item>
         <item>Дате записи</item>
@@ -10,5 +9,4 @@
         <item>dateTime</item>
         <item>master</item>
     </string-array>
-
 </resources>
